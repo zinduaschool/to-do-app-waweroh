@@ -5,13 +5,13 @@ function App() {
   ])
 
   const addTodo = (title)=>{
-    const newTodo = [...todos, {id: todos.length+1, title: title, completed: false}]
+    const newTodo = [...todos, {title: title, completed: false}]
     setTodo(newTodo)
   }
 
   const updateTodo = (index)=>{
     const allTodo = [...todos]
-    allTodo[index].completed = true
+    allTodo[index].completed = !allTodo[index].completed //if else !
     setTodo(allTodo)
   }
 
@@ -24,12 +24,12 @@ function App() {
   return (
     
     <div className='bg-indigo-400'>
-      <h1 className='text-2xl font-bold text-gray-700 flex justify-center mb-12'>Todo App</h1>
+      <h1 className='text-2xl font-bold text-gray-700 flex justify-center mb-12'>Todo List</h1>
       <div className=' '>
         <TodoForm addTodo={addTodo}/>
-        {todos.map((todo)=>{
+        {todos.map((todo,index)=>{
           return (
-            <Todo key={todo.id} todo={todo} updateTodo={updateTodo} deleteTodo={deleteTodo}/>
+            <Todo key={todo.id} todo={todo} updateTodo={updateTodo} index={index} deleteTodo={deleteTodo}/>
           )
         })}
       </div>
@@ -39,14 +39,14 @@ function App() {
   )
 }
 
-const Todo = ({todo, updateTodo, deleteTodo})=>{
+const Todo = ({todo,index, updateTodo, deleteTodo})=>{
   return (
-    <div className='flex justify-center mb-1' style={{
+    <div className='flex justify-center mb-1' >
+      <h1 style={{
       textDecoration: todo.completed ? 'line-through' : ''
-    }}>
-      <h1 className='text-gray-800 px-2'>{todo.title}</h1>
-      <button className='bg-blue-600 border-2 rounded-md px-1 py-1 border-gray-400 text-white mr-1' onClick={()=> updateTodo(todo.id-1)}>Complete</button>
-      <button className='bg-blue-600 border-2 rounded-md px-1 py-1 border-gray-400 text-white' onClick={()=> deleteTodo(todo.id-1) }>Delete</button>
+    }} className='text-gray-800 px-2'>{todo.title}</h1>
+      <button className='flex-row-reverse bg-blue-600 border-2 rounded-md px-1 py-1 border-gray-400 text-white mr-1' onClick={()=> updateTodo(index)}>Complete</button>
+      <button className='bg-blue-600 border-2 rounded-md px-1 py-1 border-gray-400 text-white' onClick={()=> deleteTodo(index) }>Delete</button>
     </div>
   )
 }
@@ -66,7 +66,7 @@ const TodoForm = ({addTodo})=>{
     
     <form className='flex justify-center mb-10' onSubmit={handleSubmit}>
       <input className=' max-w-full mr-2 border-2 border-gray-400 rounded-md px-1 py-1' type="text" placeholder="add todo" value={value} onChange={handleChange}/>
-      <button className=' bg-blue-600 border-2 rounded-md px-1 py-1 border-gray-400 text-white text-lg-20px' onClick={()=> addTodo(Todo.id + 1)}> Add </button>
+      {/* <button className=' bg-blue-600 border-2 rounded-md px-1 py-1 border-gray-400 text-white text-lg-20px' onClick={()=> addTodo(Todo.id + 1)}> Add </button> */}
     </form>
    
   )
